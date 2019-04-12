@@ -68,6 +68,7 @@ class GraphQLEditor extends React.PureComponent<Props, State> {
   _isMounted: boolean;
   _queryEditor: null | CodeMirror;
   _schemaFetchTimeout: TimeoutID;
+  _highlightTimeout: TimeoutID;
 
   constructor(props: Props) {
     super(props);
@@ -168,7 +169,9 @@ class GraphQLEditor extends React.PureComponent<Props, State> {
     });
 
     // Remove current query highlighting
-    this._disabledOperationMarkers.forEach(textMarker => textMarker.clear());
+    for (const textMarker of this._disabledOperationMarkers) {
+      textMarker.clear();
+    }
 
     // Add "Unhighlight" markers
     this._disabledOperationMarkers = disabledDefinitions.map(definition => {
